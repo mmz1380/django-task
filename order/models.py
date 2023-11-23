@@ -12,7 +12,13 @@ class Order(models.Model):
     objects = OrderQuerySet.as_manager()
 
     def calculate_total_price(self):
-        return 0
+        orderItems = self.orderitem_set.all()
+        price = 0
+        for orderItem in orderItems:
+            temp = orderItem.product.price * orderItem.quantity
+            price += temp
+            price = round(price, 2)
+        return price
 
     def accept(self):
         self.status = OrderStatus.ACCEPTED
@@ -41,6 +47,6 @@ class OrderItem(models.Model):
 
     def save(self, *args, **kwargs):
         """You can not modify this method"""
+        super().save(*args, **kwargs)
         self.order.total_price = self.order.calculate_total_price()
         self.order.save()
-        super().save(*args, **kwargs)
