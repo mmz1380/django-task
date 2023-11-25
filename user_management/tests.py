@@ -4,7 +4,8 @@ from user_management.models import Customer
 
 
 class TestOrder(TestCase):
-    fixtures = ['user_management/fixtures/user_management.json', 'product/fixtures/product.json', 'order/fixtures/order.json']
+    fixtures = ['user_management/fixtures/user_management.json', 'product/fixtures/product.json',
+                'order/fixtures/order.json']
 
     def test_annotate_with_total_spending(self):
         customers = list(Customer.objects.annotate_with_total_spending().values('id', 'total_spending'))
